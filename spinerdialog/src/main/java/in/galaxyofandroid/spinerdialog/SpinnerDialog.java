@@ -112,9 +112,9 @@ public class SpinnerDialog {
             @Override
             public void afterTextChanged(Editable editable) {
                 if(isUseContainsFilter()){
-                    adapter.getContainsFilter(deAccent(searchBox.getText().toString()));
+                    adapter.getContainsFilter(searchBox.getText().toString());
                 } else {
-                    adapter.getFilter().filter(deAccent(searchBox.getText().toString()));
+                    adapter.getFilter().filter(searchBox.getText().toString());
                 }
             }
         });
@@ -170,12 +170,6 @@ public class SpinnerDialog {
 
     private boolean isUseContainsFilter() {
         return useContainsFilter;
-    }
-
-    private String deAccent(String str) {
-        String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
-        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-        return pattern.matcher(nfdNormalizedString).replaceAll("");
     }
 
     public void setShowKeyboard(boolean showKeyboard) {

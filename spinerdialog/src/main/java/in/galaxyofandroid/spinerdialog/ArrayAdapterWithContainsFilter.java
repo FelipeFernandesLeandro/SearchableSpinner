@@ -6,9 +6,11 @@ import android.support.annotation.NonNull;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 public class ArrayAdapterWithContainsFilter<S> extends ArrayAdapter {
 
@@ -39,12 +41,18 @@ public class ArrayAdapterWithContainsFilter<S> extends ArrayAdapter {
         {
             for (String item : arraylist)
             {
-                if (item.toLowerCase(Locale.getDefault()).contains(charText))
+                if (deAccent(item.toLowerCase(Locale.getDefault())).contains(deAccent(charText)))
                 {
                     items.add(item);
                 }
             }
         }
         notifyDataSetChanged();
+    }
+
+    private String deAccent(String str) {
+        String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(nfdNormalizedString).replaceAll("");
     }
 }
